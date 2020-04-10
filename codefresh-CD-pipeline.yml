@@ -1,0 +1,17 @@
+version: "1.0"
+
+stages:
+  - "deploy"
+
+steps:
+  deploy_to_k8s:
+    title: Running Deploy Script...
+    type: deploy
+    kind: kubernetes
+    arguments:
+      cluster: anna-demo@FirstKubernetes
+      namespace: default
+      service: registry-trigger-sample-app
+      candidate:
+        image: annabaker/registry-trigger-sample-app:latest
+        registry: 'dockerhub'

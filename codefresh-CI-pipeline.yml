@@ -1,0 +1,34 @@
+version: '1.0'
+
+stages:
+- checkout
+- build
+- push
+
+steps:
+  clone:
+    title: Cloning main repository...
+    type: git-clone
+    stage: checkout
+    arguments:
+      repo: 'codefresh-contrib/registry-trigger-sample-app'
+      revision: 'master'
+      git: github
+  build_my_app:
+    title: Building image...
+    type: build
+    stage: build
+    arguments:
+      image_name: registry-trigger-sample-app
+      working_directory: ${{clone}}
+      tag: 'master'
+      dockerfile: Dockerfile
+  push_to_my_registry:
+    stage: 'push'
+    type: push
+    title: Pushing to Dockerhub...
+    arguments:
+      candidate: ${{build_my_app}}
+      tag: 'latest'
+      registry: dockerhub
+      image_name: annabaker/registry-trigger-sample-app

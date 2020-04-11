@@ -1,8 +1,9 @@
-# Example of building and pushing a  docker image 
+# Trigger a Kubernetes Deployment from a Dockerhub Push Event 
+![k8s-and-codefresh](k8s-and-codefresh.png)
 
-This is a Git repository that holds a Node application and a Dockerfile. The dockerfile is also at the root folder of the project.
+This is a Git repository that holds a Node application and a Dockerfile. The dockerfile is also at the root folder of the project. Our example will have two pipelines.  One that is responsible for packaging code (CI), and the other will be responsible for deploying code (CD).
 
-## Packaging the Node.js app
+## Packaging the Node.js app Locally
 
 To compile and package using Docker 
 
@@ -16,12 +17,12 @@ docker build . -t my-app
 docker run -p 3000:3000 my-app
 ```
 
-and then visit http://localhost:3000 in your browser
+and then visit http://localhost:3000 in your browser.
 
 
 ## To use this project in Codefresh
 
-There is also a [codefresh.yml](codefresh.yml) for easy usage with the [Codefresh](codefresh.io) CI/CD platform.
+There is also a [codefresh-CI-pipeline.yml](codefresh-CI-pipeline.yml) and [codefresh-CD-pipeline.yml](codefresh-CD-pipeline.yml) for easy usage with the [Codefresh](codefresh.io) CI/CD platform.
 
-More details can be found in [Codefresh documentation](https://codefresh.io/docs/docs/yaml-examples/examples/build-and-push-an-image/).
+More details can be found in [Codefresh documentation](https://codefresh.io/docs/docs/yaml-examples/examples/trigger-a-k8s-deployment-from-docker-registry/).
 

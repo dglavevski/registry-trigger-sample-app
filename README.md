@@ -8,17 +8,24 @@ This is a Git repository that holds a Node application and a Dockerfile. The doc
 To compile and package using Docker 
 
 ```bash
-docker build . -t my-app 
+docker build . -t registry-trigger-sample-app
 ```
 
 ## Running the docker image
 
 ```bash
-docker run -p 3000:3000 my-app
+docker run -p 3000:3000 registry-trigger-sample-app
 ```
 
 and then visit http://localhost:3000 in your browser.
 
+## Deploying to Kubernetes
+
+```bash
+kubectl run registry-trigger-sample-app --image=annabaker/registry-trigger-sample-app:latest --port=3000 --generator=run-pod/v1
+kubectl expose deployment my-app --type=LoadBalancer --port=3000 --target-port=3000
+```
+Use `kubectl get svc` to obtain the external IP of the service you just exposed and access the application on http://YOUR.EXTERNAL.IP:3000.
 
 ## To use this project in Codefresh
 

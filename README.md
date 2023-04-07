@@ -17,7 +17,7 @@ docker build . -t registry-trigger-sample-app
 docker run -p 3000:3000 registry-trigger-sample-app
 ```
 
-and then visit http://localhost:3000 in your browser.
+and then visit http://localhost:3000 in yourbrowser.
 
 ## Deploying to Kubernetes
 

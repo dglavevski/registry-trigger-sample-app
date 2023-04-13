@@ -7,12 +7,11 @@ stages:
   - "clone"
   - "build"
   - "test"
-  - "push"
-
+  
 steps:
   clone:
     title: "Cloning repository"
-    type: "git-clone"
+    type: "git-clone" 
     repo: "dglavevski/registry-trigger-sample-app"
     # CF_BRANCH value is auto set when pipeline is triggered
     # Learn more at codefresh.io/docs/docs/codefresh-yaml/variables/
@@ -37,12 +36,3 @@ steps:
     commands:
       - "ls"
     stage: "test"
-    
-  push:
-    title: "deploy to ECR"
-    type: "push"
-    candidate: "${{build}}"
-    image_name: "dgpipeapp"
-    tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
-    registry: "${{RHINO_REGISTRY}}"
-    stage: "push"

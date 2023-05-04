@@ -1,38 +1,44 @@
-# More examples of Codefresh YAML can be found at
-# https://codefresh.io/docs/docs/yaml-examples/examples/
-
-version: "1.0"
-# Stages can help you organize your steps in stages
-stages:
-  - "clone"
-  - "build"
-  - "test"
-  
+version: '1.0'
 steps:
   clone:
-    title: "Cloning repository"
-    type: "git-clone" 
-    repo: "dglavevski/registry-trigger-sample-app"
-    # CF_BRANCH value is auto set when pipeline is triggered
-    # Learn more at codefresh.io/docs/docs/codefresh-yaml/variables/
-    revision: "${{CF_BRANCH}}"
-    git: "github-dg"
-    stage: "clone"
-
+    title: Cloning repository
+    type: git-clone
+    repo: dglavevski/registry-trigger-sample-app
+    revision: '${{CF_BRANCH}}'
+    git: github-dg
+    stage: clone
   build:
-    title: "Building Docker image"
-    type: "build"
-    image_name: "dgpipeapp"
-    working_directory: "${{clone}}"
-    tag: "${{CF_BRANCH_TAG_NORMALIZED}}"
-    dockerfile: "Dockerfile"
-    stage: "build"
-
+    title: Building Docker image
+    type: build
+    image_name: dgpipeapp
+    working_directory: '${{clone}}'
+    tag: '${{CF_BRANCH_TAG_NORMALIZED}}'
+    dockerfile: Dockerfile
+    stage: build
   test:
-    title: "Running test"
-    type: "freestyle" # Run any command
-    image: "ubuntu:latest" # The image in which command will be executed
-    working_directory: "${{clone}}" # Running command where code cloned
+    title: Running test
+    type: freestyle
+    image: 'ubuntu:latest'
+    working_directory: '${{clone}}'
     commands:
-      - "ls"
-    stage: "test"
+      - ls
+    stage: test
+  deploy:
+    title: "deploy"
+    image: 'ubuntu:latest'
+    working_directory: '${{clone}}'
+    arguments:
+          action: "install"
+          kube_context: "${{KUBE_CLUSTER_NAME}}"
+          custom_values:
+                  - 'buildID=${{CF_BUILD_ID}}'
+                  - 'image_pullPolicy=Always'
+                  - 'image_tag=2.0.0'
+                  - 'replicaCount=3'
+stages:
+  - clone
+  - build
+  - test
+  - deploy
+services: {}
+fail_fast: true
